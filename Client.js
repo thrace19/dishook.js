@@ -35,10 +35,7 @@ class WebhookClient {
         url: `${this.url}/webhooks/${this.id}/${this.token}`,
         headers: {
           'Content-Type': 'application/json',
-          'User-Agent': 'Musical Tune',
-          "Upgrade-Insecure-Requests": "1",
-          "Cache-Control": "max-age=0",
-          "Connection": "keep-alive"
+          'User-Agent': 'DisHook.js'
         },
         data: {
           embeds: [
