@@ -23,7 +23,7 @@ class WebhookClient {
     this.url = 'https://discordapp.com/api/v8';
   }
   
-  sendHook(payload) {
+  send(payload) {
     if(!payload) throw Error('Cannot send empty webhook!')
 
     return new Promise((resolve, reject) => {
