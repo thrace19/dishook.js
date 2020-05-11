@@ -1,0 +1,25 @@
+{
+  "name": "eris-boilerplate",
+  "version": "1.0.0",
+  "description": "A template for creating discord bot's in javascript using Eris",
+  "main": "Client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inhydrox/dishook.js.git"
+  },
+  "author": "inhydrox (Rajat Mishra)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inhydrox/dishook.js/issues"
+  },
+  "homepage": "https://github.com/inhydrox/dishook.js#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
