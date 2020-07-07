@@ -17,38 +17,55 @@ class WebhookClient {
        
     this.token = options.token;
       
-    this.username = options.username || 'DisHook.js'
+    this.username = options.username || 'Dishook.js'
         
     this.avatar = options.avatar_url || 'https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/mail-512.png'
     this.url = 'https://discordapp.com/api/v8';
+    
+    this.payload = {};
   }
   
-  send(payload) {
-    if(!payload) throw Error('Cannot send empty webhook!')
+  async send(payload) {
+   
+    if(!payload) throw Error('Cannot send empty webhook!');
+    
+   this.payload.username = this.username
+   this.payload.avatar_url = this.avatar;
+   
+    let endPayload = {
+            ...this.payload
+        };
 
-    return new Promise((resolve, reject) => {
-              
-    if (payload instanceof Object) {
-        
-      axios({
-        method: "POST",
-        url: `${this.url}/webhooks/${this.id}/${this.token}`,
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'DisHook.js'
-        },
-        data: {
-          embeds: [
-            payload
-          ],   
-          avatar_url: this.avatar,
-          username: this.username
+        if (typeof payload === 'string'){
+            endPayload.content = payload;
         }
-      })
-      .then(res => resolve(res))
-      .catch(err => reject(err));
-      } else  {
-              axios({
+        else {
+            endPayload = {
+                ...endPayload,
+                ...payload.getJSON()
+            };
+        };
+      try {
+        let res = await this.post(endPayload);
+
+        if(res.status === 429) {
+          const waitUntil = res["retry-after"];
+
+          setTimeout(() => this.post(endPayload), waitUntil);
+        }
+          else if (res.status != 204){
+                throw new Error(`Error sending webhook: ${res.status} status code. Response: ${await res.text()}`);
+            };
+        }
+        catch(err){
+            if (this.throwErrors) throw new Error(err.message);
+        };
+
+  }
+
+  post(payload) {
+    return new Promise((resolve, reject) => {
+      axios({
         method: "POST",
         url: `${this.url}/webhooks/${this.id}/${this.token}`,
         headers: {
@@ -58,16 +75,11 @@ class WebhookClient {
           "Cache-Control": "max-age=0",
           "Connection": "keep-alive"
         },
-        data: {
-          content: payload,
-          avatar_url: "https://cdn.discordapp.com/avatars/489076647727857685/580b58269c3509bb73bd092e622950dc.jpg?size=128",
-          username: 'Musical Tune'
-        }
+        data: JSON.stringify(payload),
       })
-      .then(res => resolve(res))
-      .catch(err => reject(err));
-      }
-    })
+    .then(res => resolve(res))
+    .catch(err => reject(err));
+    });
   }
   
 }
