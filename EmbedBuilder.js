@@ -54,7 +54,6 @@ class EmbedBuilder {
         this.data.embeds[0].color = color;
         return this;
     }
-    }
     
     setText(text) {
         this.data.text = text;
