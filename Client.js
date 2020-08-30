@@ -20,7 +20,7 @@ class WebhookClient {
     this.username = options.username || 'Dishook.js'
         
     this.avatar = options.avatar_url || 'https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/mail-512.png'
-    this.url = 'https://discordapp.com/api/v8';
+    this.url = 'https://discord.com/api/v6';
     
     this.payload = {};
   }
